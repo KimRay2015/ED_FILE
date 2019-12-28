@@ -3697,7 +3697,9 @@ void about_diy(void)
 #endif
 		gui_show_ptstr(100,120,260,136,0,WHITE,16,(u8*)WIFI_VERSION,1);
 		gui_show_strmid(0,140,320,16,WHITE,16,(u8*)CO_TD_INFO,0);				//生产公司名称
-		
+		memset(fatbuf,0,50);
+		sprintf(fatbuf,"配置文件版本:V%1.2f",ParaVersion);
+		gui_show_strmid(0,160,320,16,WHITE,16,(u8*)fatbuf,0);				//配置文件版本
 		//显示6个按钮图标
 		key_group =(_btn_obj **)gui_memin_malloc(sizeof(_btn_obj *)*num);	//创建三个图标
 		if(key_group)
@@ -4940,7 +4942,7 @@ void speed_diy(void)
 		{   
 		  case 0:
 		  	
-			if(feedmultiply>=(speed_factor_diy+50))
+			if(feedmultiply>=(speed_factor_diy+10))
 			{
 				feedmultiply -= speed_factor_diy;
 			}
@@ -4953,19 +4955,19 @@ void speed_diy(void)
 		  	if(feedmultiply <=(DEFAULT_MAX_FEEDMULTIPLY-speed_factor_diy))
 		  	{
 					feedmultiply += speed_factor_diy;
-				}
+			}
 			
 			memset(fatbuf,0,100);
 			sprintf(fatbuf,"%04d%%",feedmultiply);			
 			gui_show_strmid(140,96,40,16,WHITE,16,fatbuf,0);
 		  break;
 		 case 2:
-       gui_phy.back_color = BACK2_DIY;
+       		gui_phy.back_color = BACK2_DIY;
 			if(speed_factor_diy==10)
 			{
 				speed_factor_diy = 50;
 				sprintf(fatbuf,"%03d",speed_factor_diy);
-        gui_show_strmid(67,169,24,16,WHITE,16,fatbuf,0);
+        		gui_show_strmid(67,169,24,16,WHITE,16,fatbuf,0);
 			}
 			else if(speed_factor_diy==50)
 			{

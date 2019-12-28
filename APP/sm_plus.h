@@ -84,6 +84,7 @@ extern u8 FilamentUnloadFlg;
 
 extern u8 LeveingComplete;
 extern FIL logtext;
+extern float ParaVersion;
 
 void update_icon(void);
 void qlzdecompressed(u8* name);

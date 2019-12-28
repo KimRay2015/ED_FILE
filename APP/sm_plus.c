@@ -48,6 +48,7 @@ u8 U_ENDSTOPS_INVERTING = 1;
 u8 V_ENDSTOPS_INVERTING = 0;
 u8 W_ENDSTOPS_INVERTING = 1;
 
+float ParaVersion = 0.01;	//配置文件版本
 
 long e_steps_count = 0;
 long z_setps_count = 0;
@@ -294,8 +295,8 @@ void printinfo_update(void)
 	if(usr_timer.sec % 30 == 0)															//every 30 sec check once print percent
 	{
 		CurrentReadSize = f_tell(&card.fgcode);
-		//print_percent = ((float)CurrentReadSize/ PrintInfo.filesize)*100;					//Read Data With f_gets
-		print_percent = ((float)CurrentReadSize/ CurrentFileSize)*100;					//Read Data With f_gets
+		//per = (f_tell(&card.fgcode)*100)/PrintInfo.filesize;					//Read Data With f_gets
+		print_percent = ((float)CurrentReadSize/ PrintInfo.filesize)*100;					//Read Data With f_gets
 		PrintInfo.printper = (uint8_t)print_percent;
 		sendFlg = 1;
 		oldper = per;
@@ -1127,6 +1128,9 @@ Para_T Para[] = {
 	{"Y_ENDSTOPS_INVERTING",						1	, {0, 0, 0, 0}}, //21	结束停止Y轴转向?
 	{"Z_ENDSTOPS_INVERTING",						1	, {0, 0, 0, 0}}, //22	结束停止Z轴转向?
 	{"FILAMENT_INVERTING",							1	, {0, 0, 0, 0}}, //22	结束停止Z轴转向?
+	{"speed_temprature_factor",                     1	, {0, 0, 0, 0}}, //23   温度倍速关系系数
+	{"Machine_Size",                     			3	, {0, 0, 0, 0}}, //24	机器打印尺寸 
+	{"Para_Version",                     			1	, {0, 0, 0, 0}}, //25	配置文件版本
 	//{"retract_feedrate",							1	, {0, 0, 0, 0}}, //23	缩进进料速度?
 	//{"retract_zlift",								1	, {0, 0, 0, 0}}, //24	Z轴抬起？
 	//{"retract_recover_length",						1	, {0, 0, 0, 0}}, //25	长度收缩恢复？
@@ -1158,7 +1162,7 @@ u16 ConfigurationWrite2EEPROM(void)
 		return NON_CONFIGFILE;//文件不存在
 	} else {
 		f_gets(Str_Buff, STRING_LEN, fp);
-		printf("Str_Buff:%s\n", Str_Buff);
+		//printf("Str_Buff:%s\n", Str_Buff);
 		printf("FILE_HEADER:%s\n", FILE_HEADER);
 		if(!strcmp(FILE_HEADER, Str_Buff)) { //参数表头
 			for(i = 0; i < Parameter_Num; i++) {
@@ -1271,6 +1275,10 @@ void save_configfile(void)
 	//retract_recover_length = Para[24].Float_Data[0];
 
 	speed_temprature_factor = Para[23].Float_Data[0];
+	max_pos[0] = Para[24].Float_Data[0];
+	max_pos[1] = Para[24].Float_Data[1];
+	max_pos[2] = Para[24].Float_Data[2];
+	ParaVersion = Para[25].Float_Data[0];
 }
 
 

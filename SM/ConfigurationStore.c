@@ -166,6 +166,18 @@ void Config_StoreSettings(void)
 	wlen = sizeof(W_ENDSTOPS_INVERTING);
 	AT24CXX_Write(i,(u8*)&W_ENDSTOPS_INVERTING,wlen);
 	i += wlen;
+	wlen = sizeof(max_pos[0]);
+	AT24CXX_Write(i,(u8*)&max_pos[0],wlen);
+	i += wlen;
+	wlen = sizeof(max_pos[1]);
+	AT24CXX_Write(i,(u8*)&max_pos[1],wlen);
+	i += wlen;
+	wlen = sizeof(max_pos[2]);
+	AT24CXX_Write(i,(u8*)&max_pos[2],wlen);
+	i += wlen;
+	wlen = sizeof(ParaVersion);
+	AT24CXX_Write(i,(u8*)&ParaVersion,wlen);
+	i += wlen;
 #ifdef FWRETRACT
 	wlen = sizeof(retract_feedrate);
 	AT24CXX_Write(i,(u8*)&retract_feedrate,wlen);
@@ -303,6 +315,18 @@ void Config_RetrieveSettings()
 	i += wlen;
 	wlen = sizeof(W_ENDSTOPS_INVERTING);
 	AT24CXX_Read(i,(u8*)&W_ENDSTOPS_INVERTING,wlen);
+	i += wlen;
+	wlen = sizeof(max_pos[0]);
+	AT24CXX_Read(i,(u8*)&max_pos[0],wlen);
+	i += wlen;
+	wlen = sizeof(max_pos[1]);
+	AT24CXX_Read(i,(u8*)&max_pos[1],wlen);
+	i += wlen;
+	wlen = sizeof(max_pos[2]);
+	AT24CXX_Read(i,(u8*)&max_pos[2],wlen);
+	i += wlen;
+	wlen = sizeof(ParaVersion);
+	AT24CXX_Read(i,(u8*)&ParaVersion,wlen);
 	i += wlen;
 #ifdef FWRETRACT
 	wlen = sizeof(retract_feedrate);
